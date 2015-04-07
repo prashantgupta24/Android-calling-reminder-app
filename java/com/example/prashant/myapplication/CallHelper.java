@@ -6,22 +6,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.LinearLayout;
-import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.zip.Inflater;
 
 /**
  * Created by Prashant on 05-Apr-2015.
@@ -57,14 +50,19 @@ public class CallHelper  {
 
                     if (mCursor != null && mCursor.moveToFirst()) {
                         String msg = mCursor.getString(mCursor.getColumnIndex("message"));
-                        for (int i=0;i<4;i++) {
+                        for (int i=0;i<3;i++) {
 
-                            Toast t = Toast.makeText(ctx, msg, Toast.LENGTH_SHORT);
-                            t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
-                            LinearLayout linearLayout = (LinearLayout) t.getView();
-                            TextView messageTextView = (TextView) linearLayout.getChildAt(0);
-                            messageTextView.setTextSize(20);
-                            t.show();
+                            LayoutInflater inflater = LayoutInflater.from(ctx);
+                            View layout = inflater.inflate(R.layout.toast_layout,null);
+
+                            TextView text = (TextView) layout.findViewById(R.id.text);
+                            text.setText(msg);
+
+                            Toast toast = new Toast(ctx);
+                            toast.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
+                            toast.setDuration(Toast.LENGTH_LONG);
+                            toast.setView(layout);
+                            toast.show();
                         }
                     }
 
@@ -97,13 +95,26 @@ public class CallHelper  {
 
             if (mCursor != null && mCursor.moveToFirst()) {
                 String msg = mCursor.getString(mCursor.getColumnIndex("message"));
-                for (int i=0;i<3;i++) {
-                    Toast t = Toast.makeText(ctx, msg, Toast.LENGTH_SHORT);
+                for (int i=0;i<2;i++) {
+
+                    LayoutInflater inflater = LayoutInflater.from(ctx);
+                    View layout = inflater.inflate(R.layout.toast_layout,null);
+
+                    TextView text = (TextView) layout.findViewById(R.id.text);
+                    text.setText(msg);
+
+                    Toast toast = new Toast(ctx);
+                    toast.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
+
+                   /* Toast t = Toast.makeText(ctx, msg, Toast.LENGTH_SHORT);
                     t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
                     LinearLayout linearLayout = (LinearLayout) t.getView();
                     TextView messageTextView = (TextView) linearLayout.getChildAt(0);
                     messageTextView.setTextSize(20);
-                    t.show();
+                    t.show();*/
                 }
             }
         }
