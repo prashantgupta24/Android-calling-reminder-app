@@ -14,25 +14,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends ActionBarActivity implements NoticeDialogFragment.NoticeDialogListener{
+public class MainActivity extends ActionBarActivity implements NoticeDialogFragment.NoticeDialogListener, DeleteDialogFragment.DeleteDialogListener {
 
- EditText contactText;
+ TextView contactText;
  EditText messageText;
  Button saveButton;
-  boolean overWrite = false;
-    SQLiteDatabase db;
+ Button delButton;
+ SQLiteDatabase db;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        contactText = (EditText)findViewById(R.id.contactName);
+        contactText = (TextView)findViewById(R.id.contactName);
         messageText = (EditText)findViewById(R.id.message);
         saveButton = (Button)findViewById(R.id.save);
-        overWrite = false;
 
         Intent intent = new Intent(this, CallDetectService.class);
         startService(intent);
@@ -40,7 +40,16 @@ public class MainActivity extends ActionBarActivity implements NoticeDialogFragm
 
     public void saveData(View v)
     {
-        insertIntoDB();
+        String contactName = this.contactText.getText().toString();
+        String message = this.messageText.getText().toString();
+        if(contactName.equals(""))
+            Toast.makeText(getApplicationContext(), "Please select a contact first!", Toast.LENGTH_SHORT).show();
+        else
+            if(message.equals(""))
+                Toast.makeText(getApplicationContext(), "Please type a message!", Toast.LENGTH_SHORT).show();
+
+            else
+            insertIntoDB(contactName, message);
     }
 
     @Override
@@ -65,13 +74,10 @@ public class MainActivity extends ActionBarActivity implements NoticeDialogFragm
         contactText.setText("");
         messageText.setText("");
     }
-    public void insertIntoDB()
+    public void insertIntoDB(String contactName, String message)
     {
         FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(this);
         db = mDbHelper.getWritableDatabase();
-
-        String contactName = this.contactText.getText().toString();
-        String message = this.messageText.getText().toString();
 
         Cursor mCursor =
 
@@ -96,26 +102,24 @@ public class MainActivity extends ActionBarActivity implements NoticeDialogFragm
 
     public void retrieve(View v)
     {
-       /* FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(this);
-        db = mDbHelper.getReadableDatabase();
-
-        Cursor mCursor =
-
-                db.query("mytable", new String[] {"name","message"}, "name" + "='" + contactText.getText().toString()+"'", null,
-                        null, null, null, null);
-        if (mCursor != null && mCursor.moveToFirst()) {
-            String msg = mCursor.getString(mCursor.getColumnIndex("message"));
-            contactText.setText("");
-            messageText.setText(msg);
-        }
-        else
-        {
-            Toast toast = Toast.makeText(getApplicationContext(), "Record not found!", Toast.LENGTH_SHORT);
-            toast.show();
-            contactText.setText("");
-            messageText.setText("");
-        }*/
         pickContact();
+    }
+
+    public void delMsg(View v)
+    {
+        String contactName = this.contactText.getText().toString();
+        String message = this.messageText.getText().toString();
+
+        if(contactName.equals(""))
+            Toast.makeText(getApplicationContext(), "Please select a contact first!", Toast.LENGTH_SHORT).show();
+        else
+        if(message.equals(""))
+            Toast.makeText(getApplicationContext(), "No message saved!", Toast.LENGTH_SHORT).show();
+
+        else {
+            DeleteDialogFragment delFragment = new DeleteDialogFragment();
+            delFragment.show(getFragmentManager(), "delete");
+        }
     }
 
     @Override
@@ -173,7 +177,51 @@ public class MainActivity extends ActionBarActivity implements NoticeDialogFragm
 
                 contactText.setText(contactName);
 
+                FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(this);
+                db = mDbHelper.getReadableDatabase();
+
+                Cursor mCursor =
+
+                        db.query("mytable", new String[] {"name","message"}, "name" + "='" + contactName+"'", null,
+                                null, null, null, null);
+                if (mCursor != null && mCursor.moveToFirst()) {
+                    String msg = mCursor.getString(mCursor.getColumnIndex("message"));
+                    messageText.setText(msg);
+                }
             }
         }
+    }
+
+    @Override
+    public void onDeletePositiveClick(DialogFragment dialog) {
+
+        String contactName = this.contactText.getText().toString();
+
+        FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(this);
+        db = mDbHelper.getReadableDatabase();
+
+        Cursor mCursor =
+
+                db.query("mytable", new String[] {"name","message"}, "name" + "='" + contactText.getText().toString()+"'", null,
+                        null, null, null, null);
+        if (mCursor != null && mCursor.moveToFirst()) {
+            String msg = mCursor.getString(mCursor.getColumnIndex("message"));
+            messageText.setText(msg);
+        }
+
+        if(db.delete("mytable", "name='" + contactName+"'", null) > 0) {
+            Toast.makeText(getApplicationContext(), "Deleted!", Toast.LENGTH_SHORT).show();
+
+            contactText.setText("");
+            messageText.setText("");
+        }
+        else
+            Toast.makeText(getApplicationContext(), "Nothing to delete!", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onDeleteNegativeClick(DialogFragment dialog) {
+        Toast.makeText(getApplicationContext(), "Canceled!", Toast.LENGTH_SHORT).show();
     }
 }

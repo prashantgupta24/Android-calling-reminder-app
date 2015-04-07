@@ -59,45 +59,7 @@ public class CallHelper  {
                         for (int i=0;i<2;i++)
                             Toast.makeText(ctx, msg, Toast.LENGTH_LONG).show();
                     }
-                  /*  else
-                    {
-                        Toast.makeText(ctx, "Record not found!", Toast.LENGTH_LONG).show();
-                    }*/
 
-                /*    WindowManager wm = (WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE);
-
-                    WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-                            RadioGroup.LayoutParams.MATCH_PARENT,
-                            RadioGroup.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT |
-                            WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
-                            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-                                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                            PixelFormat.TRANSPARENT);
-
-                    params.height = RadioGroup.LayoutParams.MATCH_PARENT;
-                    params.width = RadioGroup.LayoutParams.MATCH_PARENT;
-                    params.format = PixelFormat.TRANSLUCENT;
-
-                    params.gravity = Gravity.TOP;
-
-                    LinearLayout ly = new LinearLayout(ctx);
-                    ly.setBackgroundColor(Color.RED);
-                    ly.setOrientation(LinearLayout.VERTICAL);
-                    //Inflater inflater;
-                    //RelativeLayout overlay = (RelativeLayout) inflater.inflate(R.layout.activity_main, null);
-/*
-                    _av = new ActivatorView(this);
-                    _avLayoutParams = new WindowManager.LayoutParams(0, 0, 0, 0,
-                            WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
-                            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                            PixelFormat.OPAQUE);
-                    _avLayoutParams.screenBrightness = _fScreenBrightness = 20f;
-
-
-                    wm.addView(_av, _avLayoutParams);
-
-                    View v = View.inflate(ctx,R.layout.test, null);
-                    wm.addView(v, params);*/
                     break;
 
             }
@@ -113,6 +75,8 @@ public class CallHelper  {
         public void onReceive(Context context, Intent intent) {
             String number = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
 
+            //Toast.makeText(ctx, number, Toast.LENGTH_LONG).show();
+
             Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
             Cursor cursor = ctx.getContentResolver().query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, number, null, null );
             if(cursor.moveToFirst()){
@@ -125,7 +89,7 @@ public class CallHelper  {
 
             if (mCursor != null && mCursor.moveToFirst()) {
                 String msg = mCursor.getString(mCursor.getColumnIndex("message"));
-                for (int i=0;i<2;i++)
+                for (int i=0;i<1;i++)
                     Toast.makeText(ctx, msg, Toast.LENGTH_LONG).show();
             }
         }
