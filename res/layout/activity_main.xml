@@ -40,18 +40,22 @@
         android:layout_height="wrap_content"
         android:id="@+id/contactName"
         android:textSize="20sp"
-        android:layout_below="@+id/retrieve"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignBottom="@+id/retrieve"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/message"
+        android:layout_toEndOf="@+id/message"
+        android:layout_alignTop="@+id/retrieve"
+        android:gravity="center|left" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Delete message"
         android:id="@+id/delMsg"
-        android:layout_centerVertical="true"
+        android:onClick="delMsg"
+        android:layout_below="@+id/save"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="delMsg"/>
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.zip.Inflater;
@@ -56,8 +57,15 @@ public class CallHelper  {
 
                     if (mCursor != null && mCursor.moveToFirst()) {
                         String msg = mCursor.getString(mCursor.getColumnIndex("message"));
-                        for (int i=0;i<2;i++)
-                            Toast.makeText(ctx, msg, Toast.LENGTH_LONG).show();
+                        for (int i=0;i<4;i++) {
+
+                            Toast t = Toast.makeText(ctx, msg, Toast.LENGTH_SHORT);
+                            t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
+                            LinearLayout linearLayout = (LinearLayout) t.getView();
+                            TextView messageTextView = (TextView) linearLayout.getChildAt(0);
+                            messageTextView.setTextSize(20);
+                            t.show();
+                        }
                     }
 
                     break;
@@ -89,8 +97,14 @@ public class CallHelper  {
 
             if (mCursor != null && mCursor.moveToFirst()) {
                 String msg = mCursor.getString(mCursor.getColumnIndex("message"));
-                for (int i=0;i<1;i++)
-                    Toast.makeText(ctx, msg, Toast.LENGTH_LONG).show();
+                for (int i=0;i<3;i++) {
+                    Toast t = Toast.makeText(ctx, msg, Toast.LENGTH_SHORT);
+                    t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
+                    LinearLayout linearLayout = (LinearLayout) t.getView();
+                    TextView messageTextView = (TextView) linearLayout.getChildAt(0);
+                    messageTextView.setTextSize(20);
+                    t.show();
+                }
             }
         }
 

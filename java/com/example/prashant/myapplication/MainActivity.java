@@ -9,11 +9,14 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,11 +45,17 @@ public class MainActivity extends ActionBarActivity implements NoticeDialogFragm
     {
         String contactName = this.contactText.getText().toString();
         String message = this.messageText.getText().toString();
-        if(contactName.equals(""))
-            Toast.makeText(getApplicationContext(), "Please select a contact first!", Toast.LENGTH_SHORT).show();
+        if(contactName.equals("")) {
+            Toast t = Toast.makeText(getApplicationContext(), "Please select a contact first!", Toast.LENGTH_SHORT);
+            t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
+            t.show();
+        }
         else
-            if(message.equals(""))
-                Toast.makeText(getApplicationContext(), "Please type a message!", Toast.LENGTH_SHORT).show();
+            if(message.equals("")) {
+                Toast t = Toast.makeText(getApplicationContext(), "Please type a message!", Toast.LENGTH_SHORT);
+                t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
+                t.show();
+            }
 
             else
             insertIntoDB(contactName, message);
@@ -62,7 +71,9 @@ public class MainActivity extends ActionBarActivity implements NoticeDialogFragm
         values.put("name", contactName);
         values.put("message", message);
         db.update("mytable", values, "name='"+ contactName+"'",null);
-        Toast.makeText(getApplicationContext(), "Over-Written!", Toast.LENGTH_SHORT).show();
+        Toast t = Toast.makeText(getApplicationContext(), "Over-written!", Toast.LENGTH_SHORT);
+        t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
+        t.show();
         contactText.setText("");
         messageText.setText("");
 
@@ -70,9 +81,9 @@ public class MainActivity extends ActionBarActivity implements NoticeDialogFragm
 
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
-        Toast.makeText(getApplicationContext(), "Canceled!", Toast.LENGTH_SHORT).show();
+      /*  Toast.makeText(getApplicationContext(), "Canceled!", Toast.LENGTH_SHORT).show();
         contactText.setText("");
-        messageText.setText("");
+        messageText.setText("");*/
     }
     public void insertIntoDB(String contactName, String message)
     {
@@ -93,7 +104,11 @@ public class MainActivity extends ActionBarActivity implements NoticeDialogFragm
             values.put("name", contactName);
             values.put("message", message);
             db.insert("mytable", null, values);
-            Toast.makeText(getApplicationContext(), "Saved!", Toast.LENGTH_SHORT).show();
+            Toast t = Toast.makeText(getApplicationContext(), "Saved!", Toast.LENGTH_SHORT);
+            t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
+            t.show();
+            InputMethodManager imm = (InputMethodManager)getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(messageText.getWindowToken(), 0);
             contactText.setText("");
             messageText.setText("");
         }
@@ -110,11 +125,16 @@ public class MainActivity extends ActionBarActivity implements NoticeDialogFragm
         String contactName = this.contactText.getText().toString();
         String message = this.messageText.getText().toString();
 
-        if(contactName.equals(""))
-            Toast.makeText(getApplicationContext(), "Please select a contact first!", Toast.LENGTH_SHORT).show();
+        if(contactName.equals("")) {
+            Toast t = Toast.makeText(getApplicationContext(), "Please select a contact first!", Toast.LENGTH_SHORT);
+            t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
+            t.show();
+        }
         else
-        if(message.equals(""))
-            Toast.makeText(getApplicationContext(), "No message saved!", Toast.LENGTH_SHORT).show();
+        if(message.equals("")) {
+            Toast t = Toast.makeText(getApplicationContext(), "No message saved!", Toast.LENGTH_SHORT);
+            t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
+            t.show();        }
 
         else {
             DeleteDialogFragment delFragment = new DeleteDialogFragment();
@@ -188,6 +208,10 @@ public class MainActivity extends ActionBarActivity implements NoticeDialogFragm
                     String msg = mCursor.getString(mCursor.getColumnIndex("message"));
                     messageText.setText(msg);
                 }
+                else
+                {
+                    messageText.setText("");
+                }
             }
         }
     }
@@ -210,18 +234,24 @@ public class MainActivity extends ActionBarActivity implements NoticeDialogFragm
         }
 
         if(db.delete("mytable", "name='" + contactName+"'", null) > 0) {
-            Toast.makeText(getApplicationContext(), "Deleted!", Toast.LENGTH_SHORT).show();
+            Toast t = Toast.makeText(getApplicationContext(), "Deleted!", Toast.LENGTH_SHORT);
+            t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
+            t.show();
 
             contactText.setText("");
             messageText.setText("");
         }
-        else
-            Toast.makeText(getApplicationContext(), "Nothing to delete!", Toast.LENGTH_SHORT).show();
+        else {
+            Toast t = Toast.makeText(getApplicationContext(), "Nothing to delete...", Toast.LENGTH_SHORT);
+            t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
+            t.show();        }
 
     }
 
     @Override
     public void onDeleteNegativeClick(DialogFragment dialog) {
-        Toast.makeText(getApplicationContext(), "Canceled!", Toast.LENGTH_SHORT).show();
+       /* Toast t = Toast.makeText(getApplicationContext(), "Canceled!", Toast.LENGTH_SHORT);
+        t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
+        t.show();    */
     }
 }
