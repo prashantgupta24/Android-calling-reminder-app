@@ -26,6 +26,7 @@ public class MainActivity extends ActionBarActivity implements NoticeDialogFragm
  Button saveButton;
  Button delButton;
  SQLiteDatabase db;
+ static String tableName = "mytable";
 
 
     @Override
@@ -45,13 +46,13 @@ public class MainActivity extends ActionBarActivity implements NoticeDialogFragm
         String contactName = this.contactText.getText().toString();
         String message = this.messageText.getText().toString();
         if(contactName.equals("")) {
-            Toast t = Toast.makeText(getApplicationContext(), "Please select a contact first!", Toast.LENGTH_SHORT);
+            Toast t = Toast.makeText(getApplicationContext(), R.string.select_contact, Toast.LENGTH_SHORT);
             t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
             t.show();
         }
         else
             if(message.equals("")) {
-                Toast t = Toast.makeText(getApplicationContext(), "Please type a message!", Toast.LENGTH_SHORT);
+                Toast t = Toast.makeText(getApplicationContext(), R.string.type_message, Toast.LENGTH_SHORT);
                 t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
                 t.show();
             }
@@ -69,7 +70,7 @@ public class MainActivity extends ActionBarActivity implements NoticeDialogFragm
         ContentValues values = new ContentValues();
         values.put("name", contactName);
         values.put("message", message);
-        db.update("mytable", values, "name='"+ contactName+"'",null);
+        db.update(tableName, values, "name='"+ contactName+"'",null);
         Toast t = Toast.makeText(getApplicationContext(), "Over-written!", Toast.LENGTH_SHORT);
         t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
         t.show();
@@ -91,7 +92,7 @@ public class MainActivity extends ActionBarActivity implements NoticeDialogFragm
 
         Cursor mCursor =
 
-                db.query("mytable", new String[] {"name","message"}, "name" + "='" + contactName +"'", null,
+                db.query(tableName, new String[] {"name","message"}, "name" + "='" + contactName +"'", null,
                         null, null, null, null);
 
         if (mCursor != null && mCursor.moveToFirst()) {
@@ -102,8 +103,8 @@ public class MainActivity extends ActionBarActivity implements NoticeDialogFragm
             ContentValues values = new ContentValues();
             values.put("name", contactName);
             values.put("message", message);
-            db.insert("mytable", null, values);
-            Toast t = Toast.makeText(getApplicationContext(), "Saved!", Toast.LENGTH_SHORT);
+            db.insert(tableName, null, values);
+            Toast t = Toast.makeText(getApplicationContext(), R.string.saved, Toast.LENGTH_SHORT);
             t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
             t.show();
             InputMethodManager imm = (InputMethodManager)getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
@@ -125,13 +126,13 @@ public class MainActivity extends ActionBarActivity implements NoticeDialogFragm
         String message = this.messageText.getText().toString();
 
         if(contactName.equals("")) {
-            Toast t = Toast.makeText(getApplicationContext(), "Please select a contact first!", Toast.LENGTH_SHORT);
+            Toast t = Toast.makeText(getApplicationContext(), R.string.select_contact, Toast.LENGTH_SHORT);
             t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
             t.show();
         }
         else
         if(message.equals("")) {
-            Toast t = Toast.makeText(getApplicationContext(), "No message saved!", Toast.LENGTH_SHORT);
+            Toast t = Toast.makeText(getApplicationContext(), R.string.no_message_saved, Toast.LENGTH_SHORT);
             t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
             t.show();        }
 
@@ -201,7 +202,7 @@ public class MainActivity extends ActionBarActivity implements NoticeDialogFragm
 
                 Cursor mCursor =
 
-                        db.query("mytable", new String[] {"name","message"}, "name" + "='" + contactName+"'", null,
+                        db.query(tableName, new String[] {"name","message"}, "name" + "='" + contactName+"'", null,
                                 null, null, null, null);
                 if (mCursor != null && mCursor.moveToFirst()) {
                     String msg = mCursor.getString(mCursor.getColumnIndex("message"));
@@ -225,15 +226,15 @@ public class MainActivity extends ActionBarActivity implements NoticeDialogFragm
 
         Cursor mCursor =
 
-                db.query("mytable", new String[] {"name","message"}, "name" + "='" + contactText.getText().toString()+"'", null,
+                db.query(tableName, new String[] {"name","message"}, "name" + "='" + contactText.getText().toString()+"'", null,
                         null, null, null, null);
         if (mCursor != null && mCursor.moveToFirst()) {
             String msg = mCursor.getString(mCursor.getColumnIndex("message"));
             messageText.setText(msg);
         }
 
-        if(db.delete("mytable", "name='" + contactName+"'", null) > 0) {
-            Toast t = Toast.makeText(getApplicationContext(), "Deleted!", Toast.LENGTH_SHORT);
+        if(db.delete(tableName, "name='" + contactName+"'", null) > 0) {
+            Toast t = Toast.makeText(getApplicationContext(), R.string.deleted, Toast.LENGTH_SHORT);
             t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
             t.show();
 
@@ -241,7 +242,7 @@ public class MainActivity extends ActionBarActivity implements NoticeDialogFragm
             messageText.setText("");
         }
         else {
-            Toast t = Toast.makeText(getApplicationContext(), "Nothing to delete...", Toast.LENGTH_SHORT);
+            Toast t = Toast.makeText(getApplicationContext(), R.string.nothing_delete, Toast.LENGTH_SHORT);
             t.setGravity(0, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL);
             t.show();        }
 

@@ -12,11 +12,11 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "MyDB.db";
 
-    final String SQL_CREATE_ENTRIES = "create table mytable(name text not null, message text)";
+    final String SQL_CREATE_ENTRIES = "create table "+MainActivity.tableName+"(name text not null, message text)";
     /*"CREATE TABLE mytable (" +  "id" + "integer primary key autoincrement," +
             "name" + "messageText" + TEXT_TYPE+" )";*/
     final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + "mytable";
+            "DROP TABLE IF EXISTS " + MainActivity.tableName;
 
     public FeedReaderDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

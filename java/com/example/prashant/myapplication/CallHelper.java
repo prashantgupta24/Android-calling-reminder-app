@@ -45,7 +45,7 @@ public class CallHelper  {
                     }
                     cursor.close();
 
-                    Cursor mCursor = db.query("mytable", new String[] {"name","message"}, "name" + "='" + incomingNumber+"'", null,
+                    Cursor mCursor = db.query(MainActivity.tableName, new String[] {"name","message"}, "name" + "='" + incomingNumber+"'", null,
                                     null, null, null, null);
 
                     if (mCursor != null && mCursor.moveToFirst()) {
@@ -90,7 +90,7 @@ public class CallHelper  {
             }
             cursor.close();
 
-            Cursor mCursor = db.query("mytable", new String[] {"name","message"}, "name" + "='" + number+"'", null,
+            Cursor mCursor = db.query(MainActivity.tableName, new String[] {"name","message"}, "name" + "='" + number+"'", null,
                     null, null, null, null);
 
             if (mCursor != null && mCursor.moveToFirst()) {

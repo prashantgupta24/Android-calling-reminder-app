@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/message"
         android:layout_marginTop="48dp"
-        android:hint="Enter message here..."
+        android:hint="@string/enter_message"
         android:textColorHint="#FFF"
         android:textCursorDrawable="@null"
         android:layout_below="@+id/contactName"
@@ -22,7 +22,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save"
+        android:text="@string/save_button"
         android:id="@+id/save"
         android:onClick="saveData"
         android:layout_below="@+id/message"
@@ -32,7 +32,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choose contact"
+        android:text="@string/choose_contact_button"
         android:id="@+id/retrieve"
         android:onClick="retrieve"
         android:layout_alignParentTop="true"
@@ -56,7 +56,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete message"
+        android:text="@string/delete_button"
         android:id="@+id/delMsg"
         android:onClick="delMsg"
         android:layout_below="@+id/save"
